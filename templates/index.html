@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transferencias Mercado Pago</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7f9;
+      --panel: #ffffff;
+      --ink: #16202a;
+      --muted: #65727f;
+      --line: #dce4ea;
+      --accent: #009ee3;
+      --ok: #008f5d;
+      --warn: #a15c00;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--ok);
+    }
+
+    main {
+      display: grid;
+      gap: 18px;
+      padding: 22px 0 36px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric, .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .metric {
+      padding: 16px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric strong {
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .panel {
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 840px;
+    }
+
+    th, td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .amount {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #e9f8f2;
+      color: var(--ok);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .pill.pending {
+      background: #fff4df;
+      color: var(--warn);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .empty {
+      padding: 28px 16px;
+      color: var(--muted);
+    }
+
+    form {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    input {
+      width: 220px;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 10px;
+      font: inherit;
+    }
+
+    button {
+      min-height: 40px;
+      border: 1px solid #007eb6;
+      border-radius: 8px;
+      padding: 0 14px;
+      color: white;
+      background: var(--accent);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .events {
+      display: grid;
+      gap: 8px;
+      padding: 14px 16px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .wrap {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .topbar, .panel-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+
+      form {
+        width: 100%;
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      input, button {
+        width: 100%;
+      }
+
+      .event {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script>
+    setTimeout(() => window.location.reload(), 15000);
+  </script>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <h1>Transferencias y pagos Mercado Pago</h1>
+      <div class="status"><span class="dot"></span> Servidor LAN activo</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="summary" aria-label="Resumen">
+      <div class="metric">
+        <span>Pagos registrados</span>
+        <strong>{{ payments|length }}</strong>
+      </div>
+      <div class="metric">
+        <span>Último monto</span>
+        <strong>
+          {% if payments %}
+            {{ payments[0].currency }} {{ payments[0].amount }}
+          {% else %}
+            -
+          {% endif %}
+        </strong>
+      </div>
+      <div class="metric">
+        <span>Último pagador</span>
+        <strong>
+          {% if payments %}
+            {{ payments[0].payer_name }}
+          {% else %}
+            -
+          {% endif %}
+        </strong>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Pagos">
+      <div class="panel-head">
+        <h2>Movimientos recibidos</h2>
+        <form method="post" action="/sync/" onsubmit="this.action='/sync/' + encodeURIComponent(this.payment_id.value)">
+          <input name="payment_id" inputmode="numeric" placeholder="ID de pago" required>
+          <button type="submit">Sincronizar</button>
+        </form>
+      </div>
+      {% if payments %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Monto</th>
+                <th>Nombre</th>
+                <th>DNI/CUIL</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in payments %}
+                <tr>
+                  <td class="amount">{{ p.currency }} {{ p.amount }}</td>
+                  <td>{{ p.payer_name }}</td>
+                  <td>
+                    {% if p.payer_identification_number %}
+                      {{ p.payer_identification_type }} {{ p.payer_identification_number }}
+                    {% else %}
+                      <span class="muted">No informado</span>
+                    {% endif %}
+                  </td>
+                  <td>{{ p.payer_email or "No informado" }}</td>
+                  <td>
+                    <span class="pill {% if p.status != 'approved' %}pending{% endif %}">
+                      {{ p.status or "sin estado" }}
+                    </span>
+                  </td>
+                  <td>{{ p.date_approved or p.date_created or p.last_seen }}</td>
+                  <td>{{ p.id }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="empty">Todavía no hay pagos guardados. Cuando llegue un webhook de Mercado Pago aparecerá acá.</div>
+      {% endif %}
+    </section>
+
+    <section class="panel" aria-label="Eventos">
+      <div class="panel-head">
+        <h2>Últimos webhooks</h2>
+        <span class="muted">La página se actualiza cada 15 segundos</span>
+      </div>
+      <div class="events">
+        {% if events %}
+          {% for event in events %}
+            <div class="event">
+              <strong>{{ event.received_at }}</strong>
+              <span>{{ event.action or event.topic or "evento" }}</span>
+              <span class="muted">{{ event.resource_id or "-" }}</span>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="muted">Sin webhooks recibidos.</div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>
