@@ -43,6 +43,27 @@ https://TU_URL_PUBLICA/webhook/mercadopago
 
 Activá el evento `payment`.
 
+## Deploy gratuito en Render
+
+El repo incluye `render.yaml` para crear un Web Service gratuito en Render.
+Render debe usar:
+
+```text
+Build Command: pip install -r requirements.txt
+Start Command: gunicorn app:app
+Health Check Path: /health
+```
+
+Variables a configurar en Render:
+
+```text
+MERCADOPAGO_ACCESS_TOKEN
+MERCADOPAGO_WEBHOOK_SECRET
+VIEW_PASSWORD
+```
+
+La base SQLite usa `/tmp/payments.db` en Render. En un plan gratuito esto sirve para pruebas, pero no es almacenamiento persistente garantizado.
+
 ## Datos mostrados
 
 La pantalla muestra monto, moneda, estado, nombre informado por Mercado Pago, email e identificación del pagador cuando la API los devuelve. Mercado Pago puede no exponer DNI/CUIL para todos los tipos de movimiento.

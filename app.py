@@ -301,8 +301,11 @@ def health():
     return jsonify({"ok": True})
 
 
+init_db()
+
+
 if __name__ == "__main__":
-    init_db()
     host = os.getenv("FLASK_HOST", "0.0.0.0")
-    port = int(os.getenv("FLASK_PORT", "8081"))
-    app.run(host=host, port=port, debug=True)
+    port = int(os.getenv("PORT", os.getenv("FLASK_PORT", "8081")))
+    debug = os.getenv("FLASK_DEBUG", "").lower() in ("1", "true", "yes")
+    app.run(host=host, port=port, debug=debug)

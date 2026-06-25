@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mercadopago-flask-dashboard
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: MERCADOPAGO_ACCESS_TOKEN
+        sync: false
+      - key: MERCADOPAGO_WEBHOOK_SECRET
+        sync: false
+      - key: VIEW_PASSWORD
+        sync: false
+      - key: DATABASE_PATH
+        value: /tmp/payments.db
